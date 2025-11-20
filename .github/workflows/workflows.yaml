@@ -1,0 +1,20 @@
+name: workflows
+
+on:
+    push:
+        branches: [ "master" ]
+    pull_request:
+        branches: [ "master" ]
+
+permissions:
+    contents: read
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Dependencies
+              run: composer install --dev -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+            - name: PHP cs fixer validation
+              run: vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes -q
